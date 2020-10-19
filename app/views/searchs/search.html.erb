@@ -1,0 +1,47 @@
+<br>
+<br>
+<br>
+<% if @user_or_book == "1"%>
+    <h1>Users search</h1>
+    <table class="table">
+        <thead>
+			<tr>
+				<th></th>
+				<th>User</th>
+				<th>introduction</th>
+				<th colspan="3"></th>
+				</tr>
+			</thead>
+        <% @users.each do |user| %>
+        <tbody>
+            <tr>
+                <th><%= attachment_image_tag(@user, :profile_image, :fill, 100, 100, fallback: "no-image-mini.jpg") %></th>
+                <th><%= user.name %> </th>
+            </tr>
+        </tbody>
+        <% end %>
+    </table>
+
+<% elsif @user_or_book == "2" %>
+    <h2>Books search</h2>
+    <table class="table">
+        <thead>
+			<tr>
+				<th></th>
+				<th>Title</th>
+				<th>Opinion</th>
+				<th colspan="3"></th>
+				</tr>
+			</thead>
+    <% @books.each do |book| %>
+        <tbody>
+            <tr>
+                <th><%= attachment_image_tag(@user, :profile_image, :fill, 100, 100, fallback: "no-image-mini.jpg") %></th>
+                <th><%= book.title %></th>
+                <th><%= book.body %></th>
+            </tr>
+        </tbody>
+    <% end %>
+    </table>
+<% else %>
+<% end %>

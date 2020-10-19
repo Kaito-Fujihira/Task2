@@ -16,7 +16,7 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-header{
+.header1{
 	color:white;
 	.navbar-left{
 		span{
@@ -30,6 +30,16 @@ header{
 	margin-top:51px;
 }
 
-header .navbar-left span {
+.navbar-left span {
 	display:inline-block;
+}
+
+.seach-tag {
+	color: black;
+	display: block;
+	text-align: center;
+	background-color: white;
+	position: fixed;
+  top: 55px;
+  width: 100%;
 }

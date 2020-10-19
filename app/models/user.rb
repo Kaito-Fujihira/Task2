@@ -24,8 +24,24 @@ class User < ApplicationRecord
     followed_relationships.find_by(followed_id: other_user.id).destroy
   end
 
+  def User.search(search, user_or_book, how_search)
+    if user_or_book == "1"
+      if how_search == "1"
+        User.where(['name LIKE ?', "%#{search}%"])
+      elsif how_search == "2"
+        User.where(['name LIKE ?', "%#{search}"])
+      elsif how_search == "3"
+        User.where(['name LIKE ?', "#{search}%"])
+      elsif how_search == "4"
+        User.where(['name LIKE ?', "#{search}"])
+      else
+        User.all
+      end
+    end
+  end
+
   attachment :profile_image, destroy: false
   validates :name, presence: true
   validates :name, length: {maximum: 20, minimum: 2}, uniqueness: true
-  validates:introduction, length: {maximum: 50}
+  validates :introduction, length: {maximum: 50}
 end
