@@ -1,0 +1,14 @@
+<% book.post_comments.each do |post_comment| %>
+	<%= attachment_image_tag(user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %>
+		<%= post_comment.user.name %>
+			<%= post_comment.comment %>
+        <% if post_comment.user == current_user %>
+          <div>
+            <%= link_to "Destroy", book_post_comment_path(post_comment.book, post_comment), method: :delete, remote: true, class: "btn btn-danger pull-right" %>
+          </div>
+        <% end %>
+<% end %>
+<%= form_with(model:[book, post_comment], remote: true) do |f| %>
+  <%= f.text_area :comment, rows:'5', class: "form-control" %>
+  	<%= f.submit "送信", class: "btn btn-lg btn-base-1 mt-20 pull-right" %>
+<% end %>
