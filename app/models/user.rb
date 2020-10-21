@@ -8,12 +8,21 @@ class User < ApplicationRecord
   has_many :post_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
 
+  # フォローしているユーザーを取り出す(user.followedを出来るようにする。)
+  # 自分がフォローする（与フォロー）側の関係性
   has_many :followed_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
-  has_many :followed, through: :followed_relationships
-  has_many :follower_relationships, foreign_key: "followed_id", class_name: "Relationship", dependent: :destroy
-  has_many :followers, through: :follower_relationships
+  # 与フォロー関係を通じて参照→自分がフォローしている人
+  has_many :followed, through: :followed_relationships, source: :followed
+
+  #フォローされているユーザーを取り出す(user.followersを出来るようにする。)
+  # 自分がフォローされる（被フォロー）側の関係性
+  has_many :follower_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
+  # 被フォロー関係を通じて参照→自分をフォローしている人
+  has_many :followers, through: :follower_relationships, source: :follower
+
+
   def followed?(other_user)
-    followed_relationships.find_by(followed_id: other_user.id)
+    followed_relationships.find_by(followed_id: other_user.id) #find_byによって1レコードを特定
   end
 
   def follow!(other_user)
@@ -21,7 +30,7 @@ class User < ApplicationRecord
   end
 
   def unfollow!(other_user)
-    followed_relationships.find_by(followed_id: other_user.id).destroy
+    followed_relationships.find_by(followed_id: other_user.id).destroy #find_byによって1レコードを特定し、destroyメソッドで削除している。
   end
 
   def User.search(search, user_or_book, how_search)

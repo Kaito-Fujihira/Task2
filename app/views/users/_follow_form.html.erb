@@ -1,6 +1,6 @@
-<% unless current_user?(user) %>
+<% unless current_user?(user) %> <!--現在ログインしているユーザーのプロフィールは、フォロー、フォロー解除のボタンが出ないようにする。-->
   <div id="follow_form">
-  <% if current_user.followed?(user) %>
+  <% if current_user.followed?(user) %> <!--ユーザーがフォローしている場合は、フォロー解除ボタンを表示。してない場合は、フォローボタン表示させる。-->
     <%= render 'unfollow', user: user %>
   <% else %>
     <%= render 'follow', user: user %>

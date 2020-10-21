@@ -2,7 +2,7 @@
 <% @user.followers.each do |user| %>
 <table class="table">
 <tr>
-  <td><%= attachment_image_tag(@user, :profile_image, :fill, 100, 100, fallback: "no-image-mini.jpg") %></td>
+  <td><%= attachment_image_tag(@user, :profile_image, :fill, 50, 50, size:"50x50", fallback: "no-image-mini.jpg") %></td>
   <td>  <%= user.name %> </td>
   <td>フォロー数 : <%= user.followed.count %></td>
   <td>フォロワー数 : <%= user.followers.count %></td>
