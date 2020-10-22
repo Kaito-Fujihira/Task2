@@ -10,9 +10,9 @@ class User < ApplicationRecord
 
   # フォローしているユーザーを取り出す(user.followedを出来るようにする。)
   # 自分がフォローする（与フォロー）側の関係性
-  has_many :followed_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  has_many :relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
   # 与フォロー関係を通じて参照→自分がフォローしている人
-  has_many :followed, through: :followed_relationships, source: :followed
+  has_many :followings, through: :relationships, source: :followed
 
   #フォローされているユーザーを取り出す(user.followersを出来るようにする。)
   # 自分がフォローされる（被フォロー）側の関係性
@@ -21,16 +21,16 @@ class User < ApplicationRecord
   has_many :followers, through: :follower_relationships, source: :follower
 
 
-  def followed?(other_user)
-    followed_relationships.find_by(followed_id: other_user.id) #find_byによって1レコードを特定
+  def following?(user_id)
+    self.followings.include?(user_id) #controllerのcreateに繋がる。
   end
 
-  def follow!(other_user)
-    followed_relationships.create!(followed_id: other_user.id)
+  def follow(user_id)
+    relationships.create(followed_id: user_id)
   end
 
-  def unfollow!(other_user)
-    followed_relationships.find_by(followed_id: other_user.id).destroy #find_byによって1レコードを特定し、destroyメソッドで削除している。
+  def unfollow!(user_id)
+    relationships.find_by(followed_id: user_id).destroy #find_byによって1レコードを特定し、destroyメソッドで削除している。
   end
 
   def User.search(search, user_or_book, how_search)
