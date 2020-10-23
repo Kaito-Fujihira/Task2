@@ -9,16 +9,16 @@ class User < ApplicationRecord
   has_many :favorites, dependent: :destroy
 
   # フォローしているユーザーを取り出す(user.followedを出来るようにする。)
-  # 自分がフォローする（与フォロー）側の関係性
-  has_many :relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
-  # 与フォロー関係を通じて参照→自分がフォローしている人
-  has_many :followings, through: :relationships, source: :followed
-
-  #フォローされているユーザーを取り出す(user.followersを出来るようにする。)
   # 自分がフォローされる（被フォロー）側の関係性
   has_many :follower_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
   # 被フォロー関係を通じて参照→自分をフォローしている人
   has_many :followers, through: :follower_relationships, source: :follower
+
+  #フォローされているユーザーを取り出す(user.followersを出来るようにする。)
+  # 自分がフォローする（与フォロー）側の関係性
+  has_many :relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  # 与フォロー関係を通じて参照→自分がフォローしている人
+  has_many :followings, through: :relationships, source: :followed
 
 
   def following?(user_id)
@@ -47,6 +47,17 @@ class User < ApplicationRecord
         User.all
       end
     end
+  end
+
+  include JpPrefecture # 都道府県コードから都道府県名に自動で変換する。
+  jp_prefecture :prefecture_code
+
+  def prefecture_name #都道府県名を参照出来る様にする。
+   JpPrefecture::Prefecture.find(code: prefecture_code).try(:name)
+  end
+
+  def prefecture_name=(prefecture_name)
+    self.prefecture_code = JpPrefecture::Prefecture.find(name: prefecture_name).code
   end
 
   attachment :profile_image, destroy: false
