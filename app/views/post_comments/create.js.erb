@@ -1,5 +1,6 @@
+$(".comments-count").html("コメント数: <%= @book.post_comments.count %>");
 $("#book_comment<%= @book.id %>").html("<%= j(render 'post_comments/post_comment-btn', book: @book, user: @comment.user, post_comment: @post_comment) %>");
 <!--↓コメント入力後のコメント入力欄を空にしている-->
-$(".form-control").val("");
+$("#post_comment_comment").val("");
 <!--↓railsのデフォルトはtrueなので、使用禁止をfalseにすると2回目の投稿が出来る。-->
 $(".btn btn-lg btn-base-1 mt-20 pull-right").prop('disabled', false);

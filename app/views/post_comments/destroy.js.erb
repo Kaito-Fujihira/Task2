@@ -1,2 +1,3 @@
+$(".comments-count").html("コメント数: <%= @book.post_comments.count %>");s
 $("#book_comment<%= @book.id %>").html("<%= j(render 'post_comments/post_comment-btn', book: @book, user: @comment.user, post_comment: @comment) %>");
-$(".form-control").val("");
+$("#post_comment_comment").val("");
