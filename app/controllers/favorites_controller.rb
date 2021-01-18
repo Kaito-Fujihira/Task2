@@ -10,7 +10,7 @@ class FavoritesController < ApplicationController
 
   def destroy
     @book = Book.find(params[:book_id])
-    if @book.favarited_by?(current_user)
+    if @book.favorited_by?(current_user)
       favorite = current_user.favorites.find_by(book_id: @book.id)
       favorite.destroy
     end
